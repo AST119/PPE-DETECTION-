@@ -1,1 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PPE Safety Intelligence Monitor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-950 text-slate-200 overflow-hidden h-screen flex flex-col font-sans">
 
+    <!-- Header / Control Bar -->
+    <header class="h-16 bg-slate-900 border-b border-slate-800 flex items-center px-6 justify-between shrink-0">
+        <div class="flex items-center gap-4">
+            <h1 class="text-xl font-black text-blue-500 tracking-tighter">PPE.AI</h1>
+            <div id="status-chip" class="px-2 py-1 bg-slate-800 rounded text-[10px] font-mono text-slate-400">CONNECTING...</div>
+        </div>
+
+        <!-- Toggles -->
+        <div class="flex gap-6">
+            <div class="flex items-center gap-3">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Mode: Photo | Live</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="mode-toggle" class="sr-only peer">
+                    <div class="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                </label>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Annotations</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="anno-toggle" class="sr-only peer" checked>
+                    <div class="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+                </label>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex-1 grid grid-cols-2 grid-rows-2 p-2 gap-2 overflow-hidden">
+        
+        <!-- TOP LEFT: Counters -->
+        <section class="bg-slate-900/50 rounded-xl border border-slate-800 p-8 flex flex-col justify-center">
+            <div class="grid grid-cols-2 gap-6">
+                <div class="counter-box">
+                    <span id="count-person" class="text-white">0</span>
+                    <label>Personnel</label>
+                </div>
+                <div class="counter-box">
+                    <span id="count-hat" class="text-yellow-400">0</span>
+                    <label>Hard Hats</label>
+                </div>
+                <div class="counter-box">
+                    <span id="count-vest" class="text-orange-400">0</span>
+                    <label>Safety Vests</label>
+                </div>
+                <div class="counter-box">
+                    <span id="count-gloves" class="text-emerald-400">0</span>
+                    <label>Gloves</label>
+                </div>
+            </div>
+        </section>
+
+        <!-- TOP RIGHT: Feed -->
+        <section class="bg-black rounded-xl border border-slate-800 relative overflow-hidden">
+            <video id="webcam" autoplay playsinline class="absolute inset-0 w-full h-full object-cover grayscale-[20%]"></video>
+            <canvas id="overlay" class="absolute inset-0 w-full h-full z-10"></canvas>
+            <div id="scan-line" class="absolute top-0 left-0 w-full h-1 bg-blue-500/50 shadow-[0_0_15px_blue] z-20 hidden"></div>
+        </section>
+
+        <!-- BOTTOM LEFT: LEDs -->
+        <section class="bg-slate-900/50 rounded-xl border border-slate-800 p-6 flex flex-col">
+            <h3 class="text-center text-[10px] font-bold tracking-[0.3em] text-slate-500 mb-8">SAFETY SCORE INDICATORS</h3>
+            <div class="flex justify-around items-center flex-1">
+                <div class="led-wrapper"><div id="led-green" class="led"></div><span>SAFE</span></div>
+                <div class="led-wrapper"><div id="led-yellow" class="led"></div><span>CAUTION</span></div>
+                <div class="led-wrapper"><div id="led-red" class="led"></div><span>DANGER</span></div>
+            </div>
+        </section>
+
+        <!-- BOTTOM RIGHT: AI Text & Buzzer -->
+        <section id="buzzer-zone" class="bg-slate-900/50 rounded-xl border border-slate-800 p-6 flex flex-col items-center justify-between transition-colors duration-500">
+            <div id="buzzer-ui" class="flex flex-col items-center">
+                <div class="buzzer-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                </div>
+                <h4 id="status-text" class="text-xl font-bold mt-2">Initializing...</h4>
+            </div>
+
+            <!-- AI TEXT AREA -->
+            <div class="w-full bg-black/40 rounded-lg p-4 border border-slate-700/50 min-h-[100px]">
+                <p class="text-[10px] text-blue-400 font-bold mb-1 tracking-widest">AI SAFETY REPORT</p>
+                <p id="ai-text" class="text-sm italic leading-relaxed text-slate-300">Awaiting detection data to generate report...</p>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
