@@ -1,8 +1,8 @@
 const CONFIG = {
-    API_KEY: 'cqgYJtTKSrUPMyoV48y1',
+    API_KEY: window.ENV?.ROBOFLOW_API_KEY || '',
     URL: 'https://serverless.roboflow.com/gaming-nkqzr/workflows/detect-count-and-visualize-2',
     PHOTO_INTERVAL: 5000,
-    LIVE_INTERVAL: 1000 // Faster for "Live" feel
+    LIVE_INTERVAL: 1000 
 };
 
 class SafetySystem {
@@ -10,7 +10,7 @@ class SafetySystem {
         this.video = document.getElementById('webcam');
         this.overlay = document.getElementById('overlay');
         this.ctx = this.overlay.getContext('2d');
-        this.modeToggle = document.getElementById('mode-toggle'); // Off: Photo, On: Live
+        this.modeToggle = document.getElementById('mode-toggle'); 
         this.annoToggle = document.getElementById('anno-toggle');
         
         this.elements = {
